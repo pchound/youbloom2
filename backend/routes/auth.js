@@ -23,8 +23,13 @@ router.post('/register', async (req, res) => {
         }
 
         const user = await User.create({username, email, password});
-        res.status(201).json()
-
+        const token = generateToken(user._id);
+        res.status(201).json({
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            token,
+        })
     } catch (err){
        res.status(500).json({message: "Server error"});
     }
@@ -32,7 +37,7 @@ router.post('/register', async (req, res) => {
 
 //Login
 router.post('/login', async (req, res) => {
-    const {username, email, password} = req.body;
+    const {email, password} = req.body;
         try {
         if (!email || !password) {
             return res
@@ -46,11 +51,12 @@ router.post('/login', async (req, res) => {
                 .status(401)
                 .json({ message: "Invalid creditials"})
         }
-
+    const token = generateToken(user._id);
         res.status(200).json({
-            is: user._id,
+            id: user._id,
             username: user.username,
             email: user.email,
+            token,
         })
     } catch (err){
        res.status(500).json({message: "Server error"});
@@ -58,13 +64,13 @@ router.post('/login', async (req, res) => {
 })
 
 // Me
-router.get("/me", async (req, res) => {
+router.get("/me", protect, async (req, res) => {
     res.status(200).json(req.user)
 })
 
 //Generate JWT Token
 const generateToken = (id) => {
-    return jwt.sign({id}, process.JWT_SECRET, {expiresIn: "30d"})
+    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: "30d"})
 }
 
 export default router;

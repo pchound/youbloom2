@@ -13,15 +13,15 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     password: {
-        stype: String,
+        type: String,
         required: true,
     }
 },{timestamps: true});
 
 userSchema.pre("save", async function(next){
     if (!this.isModified("password")) next();
-    const salt = await bcrypt.getSalt(10);
-    this.password - await bycrpt.hash(this.password, salt);
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
     next();
 })
 

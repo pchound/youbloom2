@@ -1,0 +1,19 @@
+APIs to use to test in postman
+
+POST
+http://localhost:5000/api/users/register
+    "username": "xxxxx",
+    "email": "xxxxx",
+    "password": "xxxxx"
+
+POST
+http://localhost:5000/api/users/login
+    "email": "xxxxx",
+    "password": "xxxxx"
+
+GET
+http://localhost:5000/api/users/me
+(After POST, copy token. Under Headers, enable authorization,
+type "bearer", followed by pasting the token.
+You'll get several JSON stats.)
+Tutorial here: https://youtu.be/HloRryMCtRE?si=-nVI4PZV2AWKl-54&t=2882
