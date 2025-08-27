@@ -1,5 +1,5 @@
 APIs to use to test in postman
-
+npm run dev in the backend
 POST
 http://localhost:5000/api/users/register
     "username": "xxxxx",
